@@ -1,0 +1,4 @@
+name: skillissue
+version: '${project.version}'
+main: net.x123dev.skillissue.MainClass
+api-version: '1.20'
