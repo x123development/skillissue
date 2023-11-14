@@ -2,3 +2,7 @@ name: skillissue
 version: '${project.version}'
 main: net.x123dev.skillissue.MainClass
 api-version: '1.20'
+commands:
+  skills:
+    description: returns an overview of the specified players skills
+    usage: /<command> <player>
