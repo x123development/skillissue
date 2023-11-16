@@ -24,7 +24,29 @@ public class SkillHandler extends BukkitRunnable{
 
     @Override
     public void run() {
+        for(Player player: Bukkit.getOnlinePlayers()){
+            player.setDisplayName(ChatColor.WHITE+"["+getLevelColor(getSkillAverageFor(player.getUniqueId().toString()))+getSkillAverageFor(player.getUniqueId().toString())+ChatColor.WHITE+"] "+player.getName());
+            player.setCustomName(ChatColor.WHITE+"["+getLevelColor(getSkillAverageFor(player.getUniqueId().toString()))+getSkillAverageFor(player.getUniqueId().toString())+ChatColor.WHITE+"] "+player.getName());
+            player.setCustomNameVisible(true);
+            player.setPlayerListName(ChatColor.WHITE+"["+getLevelColor(getSkillAverageFor(player.getUniqueId().toString()))+getSkillAverageFor(player.getUniqueId().toString())+ChatColor.WHITE+"] "+player.getName());
+        }
+    }
 
+    public static ChatColor getLevelColor(long lvl){
+        if(lvl>60)
+            return ChatColor.DARK_RED;
+        else if(lvl>50)
+            return ChatColor.LIGHT_PURPLE;
+        else if(lvl>40)
+            return ChatColor.GOLD;
+        else if(lvl>30)
+            return ChatColor.DARK_PURPLE;
+        else if(lvl>20)
+            return ChatColor.BLUE;
+        else if(lvl>10)
+            return ChatColor.GREEN;
+        else
+            return ChatColor.GRAY;
     }
 
 
@@ -99,8 +121,14 @@ public class SkillHandler extends BukkitRunnable{
                     case "explorationPerk":
                         data.explorationPerk=Long.parseLong(line.substring(line.indexOf("=")+1));
                         break;
+                    case "masteryPerk":
+                        data.masteryPerk=Long.parseLong(line.substring(line.indexOf("=")+1));
+                        break;
                     case "expSound":
                         data.expSound=Boolean.parseBoolean(line.substring(line.indexOf("=")+1));
+                        break;
+                    case "userName":
+                        data.userName=line.substring(line.indexOf("=")+1);
                         break;
                 }
                 line= reader.readLine();
@@ -146,7 +174,11 @@ public class SkillHandler extends BukkitRunnable{
             writer.newLine();
             writer.write("explorationPerk="+playerData.explorationPerk);
             writer.newLine();
+            writer.write("masteryPerk="+playerData.masteryPerk);
+            writer.newLine();
             writer.write("expSound="+playerData.expSound);
+            writer.newLine();
+            writer.write("userName="+playerData.userName);
             writer.newLine();
             writer.close();
 
@@ -177,19 +209,28 @@ public class SkillHandler extends BukkitRunnable{
         public long fishingPerk=0;
         public long alchemyPerk=0;
         public long explorationPerk=0;
+        public long masteryPerk=0;
         public boolean expSound=true;
+        public String userName="";
     }
 
     public long getSkillAverageFor(String uuid){
         if(playerData.containsKey(uuid)){
-            long avg = playerData.get(uuid).combatLvl
+            return (getTotalLevelsFor(uuid)/6);
+        }else{
+            return -1;
+        }
+    }
+
+    public long getTotalLevelsFor(String uuid){
+        if(playerData.containsKey(uuid)){
+            long total = playerData.get(uuid).combatLvl
                     +playerData.get(uuid).miningLvl
                     +playerData.get(uuid).farmingLvl
                     +playerData.get(uuid).fishingLvl
                     +playerData.get(uuid).alchemyLvl
                     +playerData.get(uuid).explorationLvl;
-            avg = avg/6;
-            return avg;
+            return total;
         }else{
             return -1;
         }
@@ -289,6 +330,14 @@ public class SkillHandler extends BukkitRunnable{
         }
     }
 
+    public long getMasteryPerkFor(String uuid){
+        if(playerData.containsKey(uuid)){
+            return playerData.get(uuid).masteryPerk;
+        }else{
+            return -1;
+        }
+    }
+
     public void setSkillPerkFor(String uuid,Skills skill,long perk){
         if(playerData.containsKey(uuid)){
             switch(skill){
@@ -311,6 +360,12 @@ public class SkillHandler extends BukkitRunnable{
                     playerData.get(uuid).explorationPerk=perk;
                     break;
             }
+        }
+    }
+
+    public void setMasteryPerkFor(String uuid,long perk){
+        if(playerData.containsKey(uuid)){
+            playerData.get(uuid).masteryPerk=perk;
         }
     }
 
@@ -338,6 +393,8 @@ public class SkillHandler extends BukkitRunnable{
     }
 
     public void addSkillExpFor(String uuid,Skills skill,long amount){
+        if(amount<=0) return;
+
         if(playerData.containsKey(uuid)){
             switch(skill){
                 case COMBAT:
@@ -403,6 +460,20 @@ public class SkillHandler extends BukkitRunnable{
             playerData.put(uuid,newPlayerData);
             MainClass.info("new playerdata created for: "+uuid);
         }
+    }
+
+    public void updatePlayer(Player player){
+        if(playerData.containsKey(player.getUniqueId().toString())){
+            playerData.get(player.getUniqueId().toString()).userName=player.getName();
+        }
+    }
+
+    public String getUUIDbyName(String name){
+        for(Map.Entry<String,PlayerData> entry:playerData.entrySet()){
+            if(entry.getValue().userName.equals(name))
+                return entry.getValue().uuid;
+        }
+        return null;
     }
 
     public enum Skills{

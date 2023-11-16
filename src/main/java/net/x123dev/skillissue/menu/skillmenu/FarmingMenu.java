@@ -41,6 +41,14 @@ public class FarmingMenu implements InventoryMenu {
         SkillHandler sh = MainClass.INSTANCE.getSkillHandler();
         String uuid = player.getUniqueId().toString();
 
+        ItemStack backArrow = new ItemStack(Material.SPECTRAL_ARROW);
+        ItemMeta backArrowMeta = backArrow.getItemMeta();
+        backArrowMeta.setDisplayName("go back");
+        backArrowMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        backArrowMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        backArrow.setItemMeta(backArrowMeta);
+        menu.setItem(0,backArrow);
+
         ItemStack miningOverview = new ItemStack(Material.WHEAT);
         ItemMeta miningOverviewMeta = miningOverview.getItemMeta();
         miningOverviewMeta.setDisplayName(""+ ChatColor.GOLD+ChatColor.BOLD+"FARMING "+sh.getSkillLvlFor(uuid,Skills.FARMING));
@@ -50,19 +58,19 @@ public class FarmingMenu implements InventoryMenu {
                 ChatColor.GRAY+"total Exp: "+sh.getSkillExpFor(uuid, Skills.FARMING),
                 ChatColor.WHITE+"|"+("-".repeat((int)(getLvlProgressByExp(sh.getSkillExpFor(uuid,Skills.FARMING))*20)))+ChatColor.DARK_GRAY+("-".repeat((int)((1-getLvlProgressByExp(sh.getSkillExpFor(uuid,Skills.FARMING)))*20)))+ChatColor.WHITE+"| "+getFormattedLvlProgressByExp(sh.getSkillExpFor(uuid,Skills.FARMING)),
                 "",
-                "<current bonus placeholder>"));
+                "Grants you a "+(sh.getSkillLvlFor(uuid,Skills.FARMING)>50?"100":(sh.getSkillLvlFor(uuid,Skills.FARMING)*2))+"% chance for double drops when farming",
+                "This perk improves with your farming level"));
         miningOverview.setItemMeta(miningOverviewMeta);
         menu.setItem(13,miningOverview);
 
         boolean perksUnlocked = sh.getSkillLvlFor(uuid,Skills.FARMING)>=10;
 
-        ItemStack skillPerk1 = new ItemStack(Material.IRON_PICKAXE);
+        ItemStack skillPerk1 = new ItemStack(Material.GOLDEN_HOE);
         ItemMeta skillPerk1Meta = skillPerk1.getItemMeta();
-        skillPerk1Meta.setDisplayName(""+ ChatColor.GOLD+ChatColor.BOLD+"<PERK 1 PLACEHOLDER>");
+        skillPerk1Meta.setDisplayName(""+ ChatColor.GOLD+ChatColor.BOLD+"REPLENISHING");
         skillPerk1Meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         skillPerk1Meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        skillPerk1Meta.setLore(List.of("",
-                "<current bonus placeholder>",
+        skillPerk1Meta.setLore(List.of("Automatically replants fully grown crops when you break them",
                 "",
                 (!perksUnlocked?ChatColor.DARK_RED+"Reach Level 10 to unlock perks for this skill!":(sh.getSkillPerkFor(uuid,Skills.FARMING)==1?ChatColor.GOLD+"This perk is currently selected!":ChatColor.GREEN+"CLICK here to select this perk!"))));
         skillPerk1.setItemMeta(skillPerk1Meta);
@@ -70,13 +78,13 @@ public class FarmingMenu implements InventoryMenu {
             skillPerk1.addUnsafeEnchantment(Enchantment.DURABILITY,1);
         menu.setItem(29,skillPerk1);
 
-        ItemStack skillPerk2 = new ItemStack(Material.IRON_PICKAXE);
+        ItemStack skillPerk2 = new ItemStack(Material.BREAD);
         ItemMeta skillPerk2Meta = skillPerk2.getItemMeta();
-        skillPerk2Meta.setDisplayName(""+ ChatColor.GOLD+ChatColor.BOLD+"<PERK 2 PLACEHOLDER>");
+        skillPerk2Meta.setDisplayName(""+ ChatColor.GOLD+ChatColor.BOLD+"NUTRITIOUS");
         skillPerk2Meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         skillPerk2Meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        skillPerk2Meta.setLore(List.of("",
-                "<current bonus placeholder>",
+        skillPerk2Meta.setLore(List.of("Grants you a 33% chance to completely fill your hunger bar",
+                "when eating nourishing food",
                 "",
                 (!perksUnlocked?ChatColor.DARK_RED+"Reach Level 10 to unlock perks for this skill!":(sh.getSkillPerkFor(uuid,Skills.FARMING)==2?ChatColor.GOLD+"This perk is currently selected!":ChatColor.GREEN+"CLICK here to select this perk!"))));
         skillPerk2.setItemMeta(skillPerk2Meta);
@@ -84,13 +92,12 @@ public class FarmingMenu implements InventoryMenu {
             skillPerk2.addUnsafeEnchantment(Enchantment.DURABILITY,1);
         menu.setItem(31,skillPerk2);
 
-        ItemStack skillPerk3 = new ItemStack(Material.IRON_PICKAXE);
+        ItemStack skillPerk3 = new ItemStack(Material.COAL_BLOCK);
         ItemMeta skillPerk3Meta = skillPerk3.getItemMeta();
         skillPerk3Meta.setDisplayName(""+ ChatColor.GOLD+ChatColor.BOLD+"<PERK 3 PLACEHOLDER>");
         skillPerk3Meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         skillPerk3Meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        skillPerk3Meta.setLore(List.of("",
-                "<current bonus placeholder>",
+        skillPerk3Meta.setLore(List.of("<current bonus placeholder>",
                 "",
                 (!perksUnlocked?ChatColor.DARK_RED+"Reach Level 10 to unlock perks for this skill!":(sh.getSkillPerkFor(uuid,Skills.FARMING)==3?ChatColor.GOLD+"This perk is currently selected!":ChatColor.GREEN+"CLICK here to select this perk!"))));
         skillPerk3.setItemMeta(skillPerk3Meta);
@@ -136,6 +143,9 @@ public class FarmingMenu implements InventoryMenu {
                 }else{
                     event.getWhoClicked().sendMessage(ChatColor.DARK_RED+"Reach Level 10 to unlock perks for this skill!");
                 }
+                break;
+            case 0:
+                MainClass.INSTANCE.getMenuHandler().openSkillOverview((Player) event.getWhoClicked());
                 break;
             default:
                 break;

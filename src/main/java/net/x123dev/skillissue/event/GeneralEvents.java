@@ -10,5 +10,6 @@ public class GeneralEvents implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
         MainClass.INSTANCE.getSkillHandler().addPlayer(event.getPlayer().getUniqueId().toString());
+        MainClass.INSTANCE.getSkillHandler().updatePlayer(event.getPlayer());
     }
 }

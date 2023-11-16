@@ -43,7 +43,9 @@ public class SkillOverviewMenu implements InventoryMenu {
 
         ItemStack skillOverview = new ItemStack(Material.NETHER_STAR);
         ItemMeta skillOverviewMeta = skillOverview.getItemMeta();
-        skillOverviewMeta.setDisplayName(""+ ChatColor.GOLD+ChatColor.BOLD+"Skill Average "+sh.getSkillAverageFor(uuid));
+        skillOverviewMeta.setDisplayName(""+ ChatColor.WHITE+ChatColor.BOLD+"Skill Mastery "+ChatColor.WHITE+ChatColor.BOLD+"["+SkillHandler.getLevelColor(sh.getSkillAverageFor(uuid))+ChatColor.BOLD+sh.getSkillAverageFor(uuid)+ChatColor.WHITE+ChatColor.BOLD+"]");
+        skillOverviewMeta.setLore(List.of("",
+                ChatColor.GREEN+"CLICK here for more info!"));
         skillOverview.setItemMeta(skillOverviewMeta);
         menu.setItem(13,skillOverview);
 
@@ -144,6 +146,9 @@ public class SkillOverviewMenu implements InventoryMenu {
         event.setCancelled(true);
 
         switch(event.getRawSlot()){
+            case 13:
+                MainClass.INSTANCE.getMenuHandler().openMasteryDetails((Player)event.getWhoClicked());
+                break;
             case 28:
                 MainClass.INSTANCE.getMenuHandler().openSkillDetails((Player)event.getWhoClicked(),Skills.COMBAT);
                 break;

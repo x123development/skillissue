@@ -18,22 +18,28 @@ public class SkillCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         String uuid="";
         if(args.length==0){
-            if(sender instanceof Player) uuid=((Player) sender).getUniqueId().toString();
-            else return false;
+            if(sender instanceof Player&&sender!=null){
+                MainClass.INSTANCE.getMenuHandler().openSkillOverview(((Player) sender));
+            }
         }else if(args.length==1){
             if(Bukkit.getPlayer(args[0])!=null)
                 uuid= Bukkit.getPlayer(args[0]).getUniqueId().toString();
             else{
-                sender.sendMessage(ChatColor.RED+"This player is not online!");
-                return true;
+                uuid = MainClass.INSTANCE.getSkillHandler().getUUIDbyName(args[0]);
+                if(uuid==null){
+                    sender.sendMessage(ChatColor.RED+"Player not found!");
+                    return true;
+                }
             }
         }else{
-            return false;
+            return true;
         }
+        if(uuid.equals(""))
+            return true;
         if(sender instanceof Player){
             Player senderPlayer = (Player) sender;
             SkillHandler sh = MainClass.INSTANCE.getSkillHandler();
-            senderPlayer.sendMessage(""+ChatColor.AQUA+ChatColor.BOLD+"Skills of player: "+Bukkit.getPlayer(UUID.fromString(uuid)).getName());
+            senderPlayer.sendMessage(""+ChatColor.AQUA+ChatColor.BOLD+"Skills of player: "+args[0]);
             senderPlayer.sendMessage(ChatColor.AQUA+"COMBAT "+sh.getSkillLvlFor(uuid,Skills.COMBAT)+ChatColor.WHITE+" - "+getFormattedLvlProgressByExp(sh.getSkillExpFor(uuid, SkillHandler.Skills.COMBAT))+" to next level, "+sh.getSkillExpFor(uuid,Skills.COMBAT)+" total Exp");
             senderPlayer.sendMessage(ChatColor.AQUA+"MINING "+sh.getSkillLvlFor(uuid,Skills.MINING)+ChatColor.WHITE+" - "+getFormattedLvlProgressByExp(sh.getSkillExpFor(uuid, SkillHandler.Skills.MINING))+" to next level, "+sh.getSkillExpFor(uuid,Skills.MINING)+" total Exp");
             senderPlayer.sendMessage(ChatColor.AQUA+"FARMING "+sh.getSkillLvlFor(uuid,Skills.FARMING)+ChatColor.WHITE+" - "+getFormattedLvlProgressByExp(sh.getSkillExpFor(uuid, SkillHandler.Skills.FARMING))+" to next level, "+sh.getSkillExpFor(uuid,Skills.FARMING)+" total Exp");
@@ -42,7 +48,7 @@ public class SkillCommand implements CommandExecutor {
             senderPlayer.sendMessage(ChatColor.AQUA+"EXPLORATION "+sh.getSkillLvlFor(uuid,Skills.EXPLORATION)+ChatColor.WHITE+" - "+getFormattedLvlProgressByExp(sh.getSkillExpFor(uuid, SkillHandler.Skills.EXPLORATION))+" to next level, "+sh.getSkillExpFor(uuid,Skills.EXPLORATION)+" total Exp");
         }else{
             SkillHandler sh = MainClass.INSTANCE.getSkillHandler();
-            sender.sendMessage("Skills of player: "+Bukkit.getPlayer(UUID.fromString(uuid)).getName());
+            sender.sendMessage("Skills of player: "+args[0]);
             sender.sendMessage("COMBAT "+sh.getSkillLvlFor(uuid,Skills.COMBAT)+ChatColor.WHITE+" - "+getFormattedLvlProgressByExp(sh.getSkillExpFor(uuid, SkillHandler.Skills.COMBAT))+" to next level, "+sh.getSkillExpFor(uuid,Skills.COMBAT)+" total Exp");
             sender.sendMessage("MINING "+sh.getSkillLvlFor(uuid,Skills.MINING)+ChatColor.WHITE+" - "+getFormattedLvlProgressByExp(sh.getSkillExpFor(uuid, SkillHandler.Skills.MINING))+" to next level, "+sh.getSkillExpFor(uuid,Skills.MINING)+" total Exp");
             sender.sendMessage("FARMING "+sh.getSkillLvlFor(uuid,Skills.FARMING)+ChatColor.WHITE+" - "+getFormattedLvlProgressByExp(sh.getSkillExpFor(uuid, SkillHandler.Skills.FARMING))+" to next level, "+sh.getSkillExpFor(uuid,Skills.FARMING)+" total Exp");

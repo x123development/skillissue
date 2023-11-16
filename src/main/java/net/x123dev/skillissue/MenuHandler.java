@@ -22,19 +22,14 @@ public class MenuHandler implements Listener {
     }
 
     @EventHandler
-    public void onSneakClick(PlayerInteractEvent event){
-        if(event.getAction()== Action.LEFT_CLICK_AIR||event.getAction()==Action.LEFT_CLICK_BLOCK) return;
-        if(event.getHand()== EquipmentSlot.OFF_HAND) return;
-        if(!event.getPlayer().isSneaking()) return;
-        openSkillOverview(event.getPlayer());
-    }
-
-    @EventHandler
     public void onInventoryClick(InventoryClickEvent event){
         if(!(lastOpenMenu.containsKey(event.getWhoClicked().getUniqueId())&&lastOpenMenu.get(event.getWhoClicked().getUniqueId())==event.getView()))
             return;
 
         switch(event.getView().getTitle()){
+            case "Skill Mastery":
+                new MasteryMenu().handleEvent(event);
+                break;
             case "Skills":
                 new SkillOverviewMenu().handleEvent(event);
                 break;
@@ -65,9 +60,14 @@ public class MenuHandler implements Listener {
         lastOpenMenu.put(player.getUniqueId(),view);
     }
 
+    public void openMasteryDetails(Player player){
+        player.closeInventory();
+        InventoryView view = player.openInventory(new MasteryMenu().build(player));
+        lastOpenMenu.put(player.getUniqueId(),view);
+    }
+
     public void openSkillDetails(Player player, SkillHandler.Skills skill){
         player.closeInventory();
-        player.sendMessage("trying to open "+skill+" menu");
         InventoryView view=null;
         switch (skill){
             case MINING:

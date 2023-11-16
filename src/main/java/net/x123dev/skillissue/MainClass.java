@@ -2,12 +2,12 @@ package net.x123dev.skillissue;
 
 import net.x123dev.skillissue.command.SkillCommand;
 import net.x123dev.skillissue.event.GeneralEvents;
-import net.x123dev.skillissue.skills.CombatSkill;
-import net.x123dev.skillissue.skills.MiningSkill;
+import net.x123dev.skillissue.skills.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
+import java.util.Random;
 
 public final class MainClass extends JavaPlugin{
 
@@ -15,6 +15,7 @@ public final class MainClass extends JavaPlugin{
     private GeneralEvents eventHandler;
     private SkillHandler skillHandler;
     private MenuHandler menuHandler;
+    public Random random;
 
     public MainClass(){
         INSTANCE=this;
@@ -22,6 +23,7 @@ public final class MainClass extends JavaPlugin{
 
     @Override
     public void onEnable() {
+        random=new Random();
         skillHandler=new SkillHandler();
         skillHandler.loadFromFile();
         skillHandler.runTaskTimer(this,20,20);
@@ -31,6 +33,11 @@ public final class MainClass extends JavaPlugin{
         getServer().getPluginManager().registerEvents(menuHandler,this);
         MiningSkill.init();
         CombatSkill.init();
+        FishingSkill.init();
+        FarmingSkill.init();
+        AlchemySkill.init();
+        MasterySkill.init();
+        ExplorationSkill.init();
         Objects.requireNonNull(Bukkit.getPluginCommand("skills")).setExecutor(new SkillCommand());
         getLogger().info("enabled!");
     }

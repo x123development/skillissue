@@ -41,6 +41,14 @@ public class CombatMenu implements InventoryMenu {
         SkillHandler sh = MainClass.INSTANCE.getSkillHandler();
         String uuid = player.getUniqueId().toString();
 
+        ItemStack backArrow = new ItemStack(Material.SPECTRAL_ARROW);
+        ItemMeta backArrowMeta = backArrow.getItemMeta();
+        backArrowMeta.setDisplayName("go back");
+        backArrowMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        backArrowMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        backArrow.setItemMeta(backArrowMeta);
+        menu.setItem(0,backArrow);
+
         ItemStack miningOverview = new ItemStack(Material.IRON_SWORD);
         ItemMeta miningOverviewMeta = miningOverview.getItemMeta();
         miningOverviewMeta.setDisplayName(""+ ChatColor.GOLD+ChatColor.BOLD+"COMBAT "+sh.getSkillLvlFor(uuid,Skills.COMBAT));
@@ -50,19 +58,19 @@ public class CombatMenu implements InventoryMenu {
                 ChatColor.GRAY+"total Exp: "+sh.getSkillExpFor(uuid, Skills.COMBAT),
                 ChatColor.WHITE+"|"+("-".repeat((int)(getLvlProgressByExp(sh.getSkillExpFor(uuid,Skills.COMBAT))*20)))+ChatColor.DARK_GRAY+("-".repeat((int)((1-getLvlProgressByExp(sh.getSkillExpFor(uuid,Skills.COMBAT)))*20)))+ChatColor.WHITE+"| "+getFormattedLvlProgressByExp(sh.getSkillExpFor(uuid,Skills.COMBAT)),
                 "",
-                "<current bonus placeholder>"));
+                "Grants "+(sh.getSkillLvlFor(player.getUniqueId().toString(), SkillHandler.Skills.COMBAT)>50?10:Math.floor(((double)(sh.getSkillLvlFor(player.getUniqueId().toString(), SkillHandler.Skills.COMBAT)))/5d))+" permanent bonus HP",
+                "This perk improves with your combat Level"));
         miningOverview.setItemMeta(miningOverviewMeta);
         menu.setItem(13,miningOverview);
 
         boolean perksUnlocked = sh.getSkillLvlFor(uuid,Skills.COMBAT)>=10;
 
-        ItemStack skillPerk1 = new ItemStack(Material.IRON_SWORD);
+        ItemStack skillPerk1 = new ItemStack(Material.BLAZE_POWDER);
         ItemMeta skillPerk1Meta = skillPerk1.getItemMeta();
-        skillPerk1Meta.setDisplayName(""+ ChatColor.GOLD+ChatColor.BOLD+"<PERK 1 PLACEHOLDER>");
+        skillPerk1Meta.setDisplayName(""+ ChatColor.GOLD+ChatColor.BOLD+"STRENGTH");
         skillPerk1Meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         skillPerk1Meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        skillPerk1Meta.setLore(List.of("",
-                "<current bonus placeholder>",
+        skillPerk1Meta.setLore(List.of("Grants you permanent Strength I",
                 "",
                 (!perksUnlocked?ChatColor.DARK_RED+"Reach Level 10 to unlock perks for this skill!":(sh.getSkillPerkFor(uuid,Skills.COMBAT)==1?ChatColor.GOLD+"This perk is currently selected!":ChatColor.GREEN+"CLICK here to select this perk!"))));
         skillPerk1.setItemMeta(skillPerk1Meta);
@@ -70,13 +78,12 @@ public class CombatMenu implements InventoryMenu {
             skillPerk1.addUnsafeEnchantment(Enchantment.DURABILITY,1);
         menu.setItem(29,skillPerk1);
 
-        ItemStack skillPerk2 = new ItemStack(Material.IRON_SWORD);
+        ItemStack skillPerk2 = new ItemStack(Material.IRON_CHESTPLATE);
         ItemMeta skillPerk2Meta = skillPerk2.getItemMeta();
-        skillPerk2Meta.setDisplayName(""+ ChatColor.GOLD+ChatColor.BOLD+"<PERK 2 PLACEHOLDER>");
+        skillPerk2Meta.setDisplayName(""+ ChatColor.GOLD+ChatColor.BOLD+"RESISTANCE");
         skillPerk2Meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         skillPerk2Meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        skillPerk2Meta.setLore(List.of("",
-                "<current bonus placeholder>",
+        skillPerk2Meta.setLore(List.of("Grants you permanent Resistance I",
                 "",
                 (!perksUnlocked?ChatColor.DARK_RED+"Reach Level 10 to unlock perks for this skill!":(sh.getSkillPerkFor(uuid,Skills.COMBAT)==2?ChatColor.GOLD+"This perk is currently selected!":ChatColor.GREEN+"CLICK here to select this perk!"))));
         skillPerk2.setItemMeta(skillPerk2Meta);
@@ -84,13 +91,12 @@ public class CombatMenu implements InventoryMenu {
             skillPerk2.addUnsafeEnchantment(Enchantment.DURABILITY,1);
         menu.setItem(31,skillPerk2);
 
-        ItemStack skillPerk3 = new ItemStack(Material.IRON_SWORD);
+        ItemStack skillPerk3 = new ItemStack(Material.FERMENTED_SPIDER_EYE);
         ItemMeta skillPerk3Meta = skillPerk3.getItemMeta();
-        skillPerk3Meta.setDisplayName(""+ ChatColor.GOLD+ChatColor.BOLD+"<PERK 3 PLACEHOLDER>");
+        skillPerk3Meta.setDisplayName(""+ ChatColor.GOLD+ChatColor.BOLD+"INTIMIDATION");
         skillPerk3Meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         skillPerk3Meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        skillPerk3Meta.setLore(List.of("",
-                "<current bonus placeholder>",
+        skillPerk3Meta.setLore(List.of("Applies Weakness I to any enemy you hit",
                 "",
                 (!perksUnlocked?ChatColor.DARK_RED+"Reach Level 10 to unlock perks for this skill!":(sh.getSkillPerkFor(uuid,Skills.COMBAT)==3?ChatColor.GOLD+"This perk is currently selected!":ChatColor.GREEN+"CLICK here to select this perk!"))));
         skillPerk3.setItemMeta(skillPerk3Meta);
@@ -136,6 +142,9 @@ public class CombatMenu implements InventoryMenu {
                 }else{
                     event.getWhoClicked().sendMessage(ChatColor.DARK_RED+"Reach Level 10 to unlock perks for this skill!");
                 }
+                break;
+            case 0:
+                MainClass.INSTANCE.getMenuHandler().openSkillOverview((Player) event.getWhoClicked());
                 break;
             default:
                 break;
