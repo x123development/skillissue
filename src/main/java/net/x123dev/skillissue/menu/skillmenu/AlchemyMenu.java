@@ -79,13 +79,13 @@ public class AlchemyMenu implements InventoryMenu {
             skillPerk1.addUnsafeEnchantment(Enchantment.DURABILITY,1);
         menu.setItem(29,skillPerk1);
 
-        ItemStack skillPerk2 = new ItemStack(Material.COAL_BLOCK);
+        ItemStack skillPerk2 = new ItemStack(Material.CLOCK);
         ItemMeta skillPerk2Meta = skillPerk2.getItemMeta();
-        skillPerk2Meta.setDisplayName(""+ ChatColor.GOLD+ChatColor.BOLD+"<PERK 2 PLACEHOLDER>");
+        skillPerk2Meta.setDisplayName(""+ ChatColor.GOLD+ChatColor.BOLD+"SUBSTANCE ACCUMULATION");
         skillPerk2Meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         skillPerk2Meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        skillPerk2Meta.setLore(List.of("",
-                "<current bonus placeholder>",
+        skillPerk2Meta.setLore(List.of("When drinking a potion while you already have that effect,",
+                " adds together the durations",
                 "",
                 (!perksUnlocked?ChatColor.DARK_RED+"Reach Level 10 to unlock perks for this skill!":(sh.getSkillPerkFor(uuid,Skills.ALCHEMY)==2?ChatColor.GOLD+"This perk is currently selected!":ChatColor.GREEN+"CLICK here to select this perk!"))));
         skillPerk2.setItemMeta(skillPerk2Meta);

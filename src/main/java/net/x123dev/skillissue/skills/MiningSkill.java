@@ -37,6 +37,10 @@ public class MiningSkill implements Listener {
         @Override
         public void run() {
             for(Player player : Bukkit.getOnlinePlayers()){
+
+                if(MainClass.INSTANCE.getSkillHandler().getSettingFor(player.getUniqueId().toString(),"skillsDisabled"))
+                    continue;
+
                 if(MainClass.INSTANCE.getSkillHandler().getSkillLvlFor(player.getUniqueId().toString(),Skills.MINING)>=50){
                     player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING,22,2,false,false));
                 }else if(MainClass.INSTANCE.getSkillHandler().getSkillLvlFor(player.getUniqueId().toString(),Skills.MINING)>=30){
@@ -131,6 +135,8 @@ public class MiningSkill implements Listener {
         if(amount>0)
             MainClass.INSTANCE.getSkillHandler().addSkillExpFor(event.getPlayer().getUniqueId().toString(), Skills.MINING, amount);
 
+        if(MainClass.INSTANCE.getSkillHandler().getSettingFor(event.getPlayer().getUniqueId().toString(),"skillsDisabled"))
+            return;
 
         //perks
         if(MainClass.INSTANCE.getSkillHandler().getSkillPerkFor(event.getPlayer().getUniqueId().toString(),Skills.MINING)==1&&event.getPlayer().getGameMode()== GameMode.SURVIVAL){

@@ -35,6 +35,9 @@ public class FishingSkill implements Listener {
         public void run() {
             for(Player player : Bukkit.getOnlinePlayers()){
 
+                if(MainClass.INSTANCE.getSkillHandler().getSettingFor(player.getUniqueId().toString(),"skillsDisabled"))
+                    continue;
+
                 if(MainClass.INSTANCE.getSkillHandler().getSkillPerkFor(player.getUniqueId().toString(), SkillHandler.Skills.FISHING)==1&&player.isInWater()){
                     player.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE,22,0,false,false));
                 }else if(MainClass.INSTANCE.getSkillHandler().getSkillPerkFor(player.getUniqueId().toString(), SkillHandler.Skills.FISHING)==2&&player.isInWater()){
@@ -53,7 +56,7 @@ public class FishingSkill implements Listener {
         if(event.getState()== PlayerFishEvent.State.CAUGHT_FISH){
             if(MainClass.INSTANCE.getSkillHandler().getSkillPerkFor(event.getPlayer().getUniqueId().toString(), SkillHandler.Skills.FISHING)==3){
                 ItemStack bonusdrop = null;
-                switch(MainClass.INSTANCE.random.nextInt(200)){
+                switch(MainClass.INSTANCE.random.nextInt(400)){
                     case 0:
                         bonusdrop=new ItemStack(Material.GOLD_INGOT);
                         break;
@@ -116,7 +119,7 @@ public class FishingSkill implements Listener {
                         break;
 
                 }
-                if(bonusdrop!=null){
+                if(bonusdrop!=null&&!(MainClass.INSTANCE.getSkillHandler().getSettingFor(event.getPlayer().getUniqueId().toString(),"skillsDisabled"))){
                     event.getPlayer().getWorld().dropItemNaturally(event.getPlayer().getLocation(),bonusdrop);
                     event.getPlayer().sendMessage(ChatColor.GRAY+"extra drop: "+bonusdrop.getAmount()+"x "+bonusdrop.getType().toString());
                 }

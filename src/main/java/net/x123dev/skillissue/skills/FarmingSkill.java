@@ -32,6 +32,10 @@ public class FarmingSkill implements Listener {
 
     @EventHandler
     public void onPlayerConsumeItem(PlayerItemConsumeEvent event){
+
+        if(MainClass.INSTANCE.getSkillHandler().getSettingFor(event.getPlayer().getUniqueId().toString(),"skillsDisabled"))
+            return;
+
         if(event.getItem().getType()==Material.BREAD
                 ||event.getItem().getType()==Material.BAKED_POTATO
                 ||event.getItem().getType()==Material.CARROT
@@ -71,11 +75,11 @@ public class FarmingSkill implements Listener {
             case CARROTS:
             case POTATOES:
             case BEETROOTS:
-                amount=5;
+                amount=8;
                 break;
             case NETHER_WART:
             case COCOA:
-                amount=7;
+                amount=10;
                 break;
             case SUGAR_CANE:
             case CACTUS:
@@ -84,13 +88,13 @@ public class FarmingSkill implements Listener {
             case BROWN_MUSHROOM_BLOCK:
             case RED_MUSHROOM:
             case RED_MUSHROOM_BLOCK:
-                amount=1;
+                amount=3;
                 break;
             case MELON:
-                amount=5;
+                amount=8;
                 break;
             case PUMPKIN:
-                amount=1;
+                amount=3;
                 break;
             default:
                 amount=0;
@@ -107,6 +111,8 @@ public class FarmingSkill implements Listener {
         }
 
 
+        if(MainClass.INSTANCE.getSkillHandler().getSettingFor(event.getPlayer().getUniqueId().toString(),"skillsDisabled"))
+            return;
 
         //perks
         if(event.getBlock().getType()==Material.WHEAT

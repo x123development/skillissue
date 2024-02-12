@@ -2,10 +2,7 @@ package net.x123dev.skillissue.skills;
 
 import net.x123dev.skillissue.MainClass;
 import net.x123dev.skillissue.SkillHandler;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
@@ -41,21 +38,28 @@ public class MasterySkill implements Listener {
             @Override
             public void run() {
                 for(Player player: Bukkit.getOnlinePlayers()) {
+
+                    if(MainClass.INSTANCE.getSkillHandler().getSettingFor(player.getUniqueId().toString(),"skillsDisabled"))
+                        continue;
+
                     if( MainClass.INSTANCE.getSkillHandler().getMasteryPerkFor(player.getUniqueId().toString())==4) {
                         List<Entity> entities = player.getNearbyEntities(10,10,10);
                         for(Entity entity : entities){
-                            if(entity.getType()== EntityType.EXPERIENCE_ORB){
-                                player.giveExp(((ExperienceOrb)entity).getExperience());
-                                entity.remove();
-                            }else if(entity.getType()==EntityType.DROPPED_ITEM){
-                                if(!(entity.getCustomName()!=null&&entity.getCustomName().equals("drop"))){
-                                    HashMap<Integer, ItemStack> didntFit = player.getInventory().addItem(((Item)entity).getItemStack());
-                                    for(Map.Entry<Integer, ItemStack> entry : didntFit.entrySet()){
-                                        Item newDrop = player.getWorld().dropItem(player.getLocation(),entry.getValue());
-                                    }
+                            if(!player.isDead()){
+                                if(entity.getType()== EntityType.EXPERIENCE_ORB){
+                                    player.giveExp(((ExperienceOrb)entity).getExperience());
                                     entity.remove();
+                                }else if(entity.getType()==EntityType.DROPPED_ITEM){
+                                    if(!(entity.getCustomName()!=null&&entity.getCustomName().equals("drop"))){
+                                        HashMap<Integer, ItemStack> didntFit = player.getInventory().addItem(((Item)entity).getItemStack());
+                                        for(Map.Entry<Integer, ItemStack> entry : didntFit.entrySet()){
+                                            Item newDrop = player.getWorld().dropItem(player.getLocation(),entry.getValue());
+                                        }
+                                        entity.remove();
+                                    }
                                 }
                             }
+
                         }
                     }
                 }
@@ -71,6 +75,10 @@ public class MasterySkill implements Listener {
         @Override
         public void run() {
             for(Player player : Bukkit.getOnlinePlayers()){
+
+                if(MainClass.INSTANCE.getSkillHandler().getSettingFor(player.getUniqueId().toString(),"skillsDisabled"))
+                    continue;
+
                 if(MainClass.INSTANCE.getSkillHandler().getMasteryPerkFor(player.getUniqueId().toString())==1){
                     player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION,322,0,false,false));
                 }
@@ -81,6 +89,10 @@ public class MasterySkill implements Listener {
     @EventHandler
     public void onPlayerDamaged(EntityDamageEvent event){
         if(event.getEntity() instanceof Player){
+
+            if(MainClass.INSTANCE.getSkillHandler().getSettingFor(((Player)(event.getEntity())).getUniqueId().toString(),"skillsDisabled"))
+                return;
+
             if(MainClass.INSTANCE.getSkillHandler().getMasteryPerkFor(((Player)(event.getEntity())).getUniqueId().toString())==3){
                 if(((Player) event.getEntity()).getHealth()<event.getDamage()){
                     event.setDamage(0);
@@ -89,7 +101,7 @@ public class MasterySkill implements Listener {
                     ((Player) event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS,600,0));
                     Location spawn = ((Player) event.getEntity()).getBedSpawnLocation();
                     if(spawn==null){
-                        spawn=event.getEntity().getWorld().getSpawnLocation();
+                        spawn=Bukkit.getWorld("world").getSpawnLocation();
                     }
                     event.getEntity().teleport(spawn);
                     Bukkit.broadcastMessage(ChatColor.GREEN+((Player)(event.getEntity())).getName()+" just got a second chance!");
@@ -100,6 +112,10 @@ public class MasterySkill implements Listener {
 
     @EventHandler
     public void onPlayerGainExperience(PlayerExpChangeEvent event){
+
+        if(MainClass.INSTANCE.getSkillHandler().getSettingFor(event.getPlayer().getUniqueId().toString(),"skillsDisabled"))
+            return;
+
         if(event.getAmount()>0&&MainClass.INSTANCE.getSkillHandler().getMasteryPerkFor(event.getPlayer().getUniqueId().toString())==2){
             event.setAmount((int)(1.5d*((double)(event.getAmount()))));
         }

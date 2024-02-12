@@ -45,6 +45,10 @@ public class ExplorationSkill implements Listener {
 
     @EventHandler
     public void onPlayerFish(PlayerFishEvent event){
+
+        if(MainClass.INSTANCE.getSkillHandler().getSettingFor(event.getPlayer().getUniqueId().toString(),"skillsDisabled"))
+            return;
+
         if(event.getState()!= PlayerFishEvent.State.IN_GROUND&&event.getState()!= PlayerFishEvent.State.REEL_IN) return;
         if(MainClass.INSTANCE.getSkillHandler().getSkillPerkFor(event.getPlayer().getUniqueId().toString(), SkillHandler.Skills.EXPLORATION)!=3) return;
 
@@ -52,10 +56,10 @@ public class ExplorationSkill implements Listener {
             if(grappleCooldowns.get(event.getPlayer())>System.currentTimeMillis())
                 return;
         }
-        grappleCooldowns.put(event.getPlayer(), System.currentTimeMillis()+5000);
+        grappleCooldowns.put(event.getPlayer(), System.currentTimeMillis()+3000);
 
         Vector diff = event.getHook().getLocation().toVector().subtract(event.getPlayer().getLocation().toVector());
-        event.getPlayer().setVelocity(diff.normalize().add(new Vector(0,0.25,0)));
+        event.getPlayer().setVelocity(diff.normalize().add(new Vector(0,0.25d,0)).multiply(1.5d));
 
     }
 
@@ -63,6 +67,13 @@ public class ExplorationSkill implements Listener {
         @Override
         public void run() {
             for(Player player : Bukkit.getOnlinePlayers()){
+
+                if(MainClass.INSTANCE.getSkillHandler().getSettingFor(player.getUniqueId().toString(),"skillsDisabled")){
+                    player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.1d);
+                    continue;
+                }
+
+
                 if(MainClass.INSTANCE.getSkillHandler().getSkillLvlFor(player.getUniqueId().toString(), SkillHandler.Skills.EXPLORATION)>50)
                     player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.15d);
                 else
@@ -78,32 +89,14 @@ public class ExplorationSkill implements Listener {
 
     @EventHandler
     public void onPlayerTeleport(PlayerTeleportEvent event){
+
+        if(MainClass.INSTANCE.getSkillHandler().getSettingFor(event.getPlayer().getUniqueId().toString(),"skillsDisabled"))
+            return;
+
         if(event.getCause()== PlayerTeleportEvent.TeleportCause.ENDER_PEARL&&MainClass.INSTANCE.getSkillHandler().getSkillPerkFor(event.getPlayer().getUniqueId().toString(), SkillHandler.Skills.EXPLORATION)==2){
             event.getPlayer().getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
         }
     }
-
-    @EventHandler
-    public void onBreakPlayerBlock(BlockBreakEvent event){
-        if(event.getPlayer()==null) return;
-        if(event.getPlayer().getInventory().getItemInMainHand()!=null
-                &&event.getPlayer().getInventory().getItemInMainHand().hasItemMeta()
-                &&event.getPlayer().getInventory().getItemInMainHand().getItemMeta().hasEnchant(Enchantment.SILK_TOUCH)) return;
-
-        int amount=0;
-        switch(event.getBlock().getType()){
-            case SPAWNER:
-                amount=2500;
-                break;
-            default:
-                amount=0;
-                break;
-        }
-        if(amount>0)
-            MainClass.INSTANCE.getSkillHandler().addSkillExpFor(event.getPlayer().getUniqueId().toString(), SkillHandler.Skills.EXPLORATION, amount);
-    }
-
-
 
     private class ExpRunnable extends BukkitRunnable {
         @Override
@@ -126,7 +119,8 @@ public class ExplorationSkill implements Listener {
             for(Player player :Bukkit.getOnlinePlayers()){
                 if(lastLocations.containsKey(player)&&lastLocations.get(player).getWorld().getName().equals(player.getLocation().getWorld().getName())){
                     if(distanceTraveled.containsKey(player)){
-                        distanceTraveled.put(player,distanceTraveled.get(player)+player.getLocation().distance(lastLocations.get(player)));
+                        if(!(player.isInsideVehicle()&&player.getVehicle().getType()==EntityType.MINECART))
+                            distanceTraveled.put(player,distanceTraveled.get(player)+player.getLocation().distance(lastLocations.get(player)));
                     }else{
                         distanceTraveled.put(player,player.getLocation().distance(lastLocations.get(player)));
                     }

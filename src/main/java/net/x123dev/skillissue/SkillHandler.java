@@ -33,17 +33,17 @@ public class SkillHandler extends BukkitRunnable{
     }
 
     public static ChatColor getLevelColor(long lvl){
-        if(lvl>60)
+        if(lvl>=60)
             return ChatColor.DARK_RED;
-        else if(lvl>50)
+        else if(lvl>=50)
             return ChatColor.LIGHT_PURPLE;
-        else if(lvl>40)
+        else if(lvl>=40)
             return ChatColor.GOLD;
-        else if(lvl>30)
+        else if(lvl>=30)
             return ChatColor.DARK_PURPLE;
-        else if(lvl>20)
+        else if(lvl>=20)
             return ChatColor.BLUE;
-        else if(lvl>10)
+        else if(lvl>=10)
             return ChatColor.GREEN;
         else
             return ChatColor.GRAY;
@@ -124,6 +124,9 @@ public class SkillHandler extends BukkitRunnable{
                     case "masteryPerk":
                         data.masteryPerk=Long.parseLong(line.substring(line.indexOf("=")+1));
                         break;
+                    case "skillsDisabled":
+                        data.skillsDisabled=Boolean.parseBoolean(line.substring(line.indexOf("=")+1));
+                        break;
                     case "expSound":
                         data.expSound=Boolean.parseBoolean(line.substring(line.indexOf("=")+1));
                         break;
@@ -178,6 +181,8 @@ public class SkillHandler extends BukkitRunnable{
             writer.newLine();
             writer.write("expSound="+playerData.expSound);
             writer.newLine();
+            writer.write("skillsDisabled="+playerData.skillsDisabled);
+            writer.newLine();
             writer.write("userName="+playerData.userName);
             writer.newLine();
             writer.close();
@@ -211,6 +216,7 @@ public class SkillHandler extends BukkitRunnable{
         public long explorationPerk=0;
         public long masteryPerk=0;
         public boolean expSound=true;
+        public boolean skillsDisabled=false;
         public String userName="";
     }
 
@@ -374,6 +380,8 @@ public class SkillHandler extends BukkitRunnable{
             switch(setting){
                 case "expSound":
                     return playerData.get(uuid).expSound;
+                case "skillsDisabled":
+                    return playerData.get(uuid).skillsDisabled;
                 default:
                     return false;
             }
@@ -386,6 +394,9 @@ public class SkillHandler extends BukkitRunnable{
         if(playerData.containsKey(uuid)){
             switch(setting){
                 case "expSound":
+                    playerData.get(uuid).expSound=bool;
+                    break;
+                case "skillsDisabled":
                     playerData.get(uuid).expSound=bool;
                     break;
             }

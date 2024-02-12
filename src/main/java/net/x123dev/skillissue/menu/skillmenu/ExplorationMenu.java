@@ -58,14 +58,14 @@ public class ExplorationMenu implements InventoryMenu {
                 ChatColor.GRAY+"total Exp: "+sh.getSkillExpFor(uuid, Skills.EXPLORATION),
                 ChatColor.WHITE+"|"+("-".repeat((int)(getLvlProgressByExp(sh.getSkillExpFor(uuid,Skills.EXPLORATION))*20)))+ChatColor.DARK_GRAY+("-".repeat((int)((1-getLvlProgressByExp(sh.getSkillExpFor(uuid,Skills.EXPLORATION)))*20)))+ChatColor.WHITE+"| "+getFormattedLvlProgressByExp(sh.getSkillExpFor(uuid,Skills.EXPLORATION)),
                 "",
-                "Increases your base movement speed by "+sh.getSkillLvlFor(uuid,Skills.EXPLORATION)+"%",
+                "Increases your base movement speed by "+(sh.getSkillLvlFor(uuid,Skills.EXPLORATION)>50?50:sh.getSkillLvlFor(uuid,Skills.EXPLORATION))+"%",
                 "This perk improves with your exploration level"));
         miningOverview.setItemMeta(miningOverviewMeta);
         menu.setItem(13,miningOverview);
 
         boolean perksUnlocked = sh.getSkillLvlFor(uuid,Skills.EXPLORATION)>=10;
 
-        ItemStack skillPerk1 = new ItemStack(Material.IRON_PICKAXE);
+        ItemStack skillPerk1 = new ItemStack(Material.RABBIT_FOOT);
         ItemMeta skillPerk1Meta = skillPerk1.getItemMeta();
         skillPerk1Meta.setDisplayName(""+ ChatColor.GOLD+ChatColor.BOLD+"JUMP BOOST");
         skillPerk1Meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -78,7 +78,7 @@ public class ExplorationMenu implements InventoryMenu {
             skillPerk1.addUnsafeEnchantment(Enchantment.DURABILITY,1);
         menu.setItem(29,skillPerk1);
 
-        ItemStack skillPerk2 = new ItemStack(Material.IRON_PICKAXE);
+        ItemStack skillPerk2 = new ItemStack(Material.ENDER_PEARL);
         ItemMeta skillPerk2Meta = skillPerk2.getItemMeta();
         skillPerk2Meta.setDisplayName(""+ ChatColor.GOLD+ChatColor.BOLD+"RENEWABLE PEARLS");
         skillPerk2Meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);

@@ -104,8 +104,15 @@ public class AlchemySkill implements Listener {
     public void onPlayerDrinkPotion(PlayerItemConsumeEvent event){
         if(event.getItem().getType()==Material.POTION&&event.getItem().hasItemMeta()&&event.getItem().getItemMeta() instanceof PotionMeta&&((PotionMeta) event.getItem().getItemMeta()).getBasePotionType()!= PotionType.WATER){
             MainClass.INSTANCE.getSkillHandler().addSkillExpFor(event.getPlayer().getUniqueId().toString(), SkillHandler.Skills.ALCHEMY, 15);
+
+            if(MainClass.INSTANCE.getSkillHandler().getSettingFor(event.getPlayer().getUniqueId().toString(),"skillsDisabled"))
+                return;
+
             PotionType drunk = ((PotionMeta) event.getItem().getItemMeta()).getBasePotionType();
             for(PotionEffect potionEffect:drunk.getPotionEffects()){
+                if(event.getPlayer().getPotionEffect(potionEffect.getType())!=null&&event.getPlayer().getPotionEffect(potionEffect.getType()).getAmplifier()==potionEffect.getAmplifier()&&MainClass.INSTANCE.getSkillHandler().getSkillPerkFor(event.getPlayer().getUniqueId().toString(), SkillHandler.Skills.ALCHEMY)==2){
+                    event.getPlayer().addPotionEffect(new PotionEffect(potionEffect.getType(),potionEffect.getDuration()+potionEffect.getDuration()*(MainClass.INSTANCE.getSkillHandler().getSkillLvlFor(event.getPlayer().getUniqueId().toString(), SkillHandler.Skills.ALCHEMY)>50?100:((int)(MainClass.INSTANCE.getSkillHandler().getSkillLvlFor(event.getPlayer().getUniqueId().toString(), SkillHandler.Skills.ALCHEMY)))*2)/100+event.getPlayer().getPotionEffect(potionEffect.getType()).getDuration(),potionEffect.getAmplifier()));
+                }
                 event.getPlayer().addPotionEffect(new PotionEffect(potionEffect.getType(),potionEffect.getDuration()+potionEffect.getDuration()*(MainClass.INSTANCE.getSkillHandler().getSkillLvlFor(event.getPlayer().getUniqueId().toString(), SkillHandler.Skills.ALCHEMY)>50?100:((int)(MainClass.INSTANCE.getSkillHandler().getSkillLvlFor(event.getPlayer().getUniqueId().toString(), SkillHandler.Skills.ALCHEMY)))*2)/100,potionEffect.getAmplifier()));
             }
         }
@@ -115,6 +122,10 @@ public class AlchemySkill implements Listener {
     public void onPotionSplash(PotionSplashEvent event){
         if(event.getEntity().getShooter() instanceof Player){
             MainClass.INSTANCE.getSkillHandler().addSkillExpFor(((Player)event.getEntity().getShooter()).getUniqueId().toString(), SkillHandler.Skills.ALCHEMY, 15);
+
+            if(MainClass.INSTANCE.getSkillHandler().getSettingFor(((Player) event.getEntity().getShooter()).getUniqueId().toString(),"skillsDisabled"))
+                return;
+
             if(MainClass.INSTANCE.getSkillHandler().getSkillPerkFor(((Player) event.getEntity().getShooter()).getUniqueId().toString(), SkillHandler.Skills.ALCHEMY)==1){
                 event.getEntity().getWorld().dropItem(event.getEntity().getLocation(),new ItemStack(Material.GLASS_BOTTLE));
             }

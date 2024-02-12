@@ -14,6 +14,8 @@ public final class MainClass extends JavaPlugin{
     public static MainClass INSTANCE;
     private GeneralEvents eventHandler;
     private SkillHandler skillHandler;
+    private BiomeHandler biomeHandler;
+    private StructureHandler structureHandler;
     private MenuHandler menuHandler;
     public Random random;
 
@@ -27,8 +29,14 @@ public final class MainClass extends JavaPlugin{
         skillHandler=new SkillHandler();
         skillHandler.loadFromFile();
         skillHandler.runTaskTimer(this,20,20);
+        biomeHandler=new BiomeHandler();
+        biomeHandler.loadFromFile();
+        structureHandler=new StructureHandler();
+        structureHandler.loadFromFile();
+        biomeHandler.runTaskTimer(this,8,20);
         eventHandler=new GeneralEvents();
         menuHandler=new MenuHandler();
+        getServer().getPluginManager().registerEvents(structureHandler,this);
         getServer().getPluginManager().registerEvents(eventHandler,this);
         getServer().getPluginManager().registerEvents(menuHandler,this);
         MiningSkill.init();
@@ -45,6 +53,8 @@ public final class MainClass extends JavaPlugin{
     @Override
     public void onDisable() {
         skillHandler.saveToFile();
+        biomeHandler.saveToFile();
+        structureHandler.saveToFile();
         getLogger().info("disabled!");
     }
 

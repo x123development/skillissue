@@ -136,6 +136,15 @@ public class SkillOverviewMenu implements InventoryMenu {
         expSoundToggle.setItemMeta(expSoundToggleMeta);
         menu.setItem(8,expSoundToggle);
 
+        ItemStack skillToggle = new ItemStack(sh.getSettingFor(uuid,"skillsDisabled")?Material.RED_DYE:Material.GREEN_DYE);
+        ItemMeta skillToggleMeta = skillToggle.getItemMeta();
+        skillToggleMeta.setDisplayName(""+ ChatColor.WHITE+"Skill Perks are currently "+(sh.getSettingFor(uuid,"skillsDisabled")?ChatColor.RED+"DISABLED":ChatColor.GREEN+"ENABLED"));
+        skillToggleMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        skillToggleMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        skillToggleMeta.setLore(List.of(ChatColor.YELLOW+"CLICK here to toggle!"));
+        skillToggle.setItemMeta(skillToggleMeta);
+        menu.setItem(7,skillToggle);
+
 
         return menu;
     }
@@ -169,6 +178,10 @@ public class SkillOverviewMenu implements InventoryMenu {
                 break;
             case 8:
                 MainClass.INSTANCE.getSkillHandler().setSettingFor(event.getWhoClicked().getUniqueId().toString(),"expSound",!MainClass.INSTANCE.getSkillHandler().getSettingFor(event.getWhoClicked().getUniqueId().toString(),"expSound"));
+                MainClass.INSTANCE.getMenuHandler().openSkillOverview((Player) event.getWhoClicked());
+                break;
+            case 7:
+                MainClass.INSTANCE.getSkillHandler().setSettingFor(event.getWhoClicked().getUniqueId().toString(),"skillsDisabled",!MainClass.INSTANCE.getSkillHandler().getSettingFor(event.getWhoClicked().getUniqueId().toString(),"skillsDisabled"));
                 MainClass.INSTANCE.getMenuHandler().openSkillOverview((Player) event.getWhoClicked());
                 break;
             default:
