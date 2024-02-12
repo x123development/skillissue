@@ -397,7 +397,7 @@ public class SkillHandler extends BukkitRunnable{
                     playerData.get(uuid).expSound=bool;
                     break;
                 case "skillsDisabled":
-                    playerData.get(uuid).expSound=bool;
+                    playerData.get(uuid).skillsDisabled=bool;
                     break;
             }
         }

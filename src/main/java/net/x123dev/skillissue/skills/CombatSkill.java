@@ -38,8 +38,11 @@ public class CombatSkill implements Listener {
         public void run() {
             for(Player player : Bukkit.getOnlinePlayers()){
 
-                if(MainClass.INSTANCE.getSkillHandler().getSettingFor(player.getUniqueId().toString(),"skillsDisabled"))
+                if(MainClass.INSTANCE.getSkillHandler().getSettingFor(player.getUniqueId().toString(),"skillsDisabled")){
+                    player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
                     continue;
+                }
+
 
                 if(MainClass.INSTANCE.getSkillHandler().getSkillLvlFor(player.getUniqueId().toString(), SkillHandler.Skills.COMBAT)>50)
                     player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(30);
