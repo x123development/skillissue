@@ -38,26 +38,29 @@ public class AlchemySkill implements Listener {
                 switch(((PotionMeta)(stack.getItemMeta())).getBasePotionType()){
                     case THICK:
                     case MUNDANE:
-                    case UNCRAFTABLE:
+                    case OOZING:
+                    case INFESTED:
                         amount+=10;
                         break;
                     case AWKWARD:
                         amount+=50;
                         break;
-                    case JUMP:
+                    case LEAPING:
                     case LUCK:
-                    case REGEN:
-                    case SPEED:
+                    case WEAVING:
+                    case WIND_CHARGED:
+                    case REGENERATION:
+                    case SWIFTNESS:
                     case POISON:
                     case SLOWNESS:
                     case STRENGTH:
                     case WEAKNESS:
-                    case INSTANT_HEAL:
+                    case HEALING:
                     case INVISIBILITY:
                     case NIGHT_VISION:
                     case SLOW_FALLING:
                     case TURTLE_MASTER:
-                    case INSTANT_DAMAGE:
+                    case HARMING:
                     case FIRE_RESISTANCE:
                     case WATER_BREATHING:
                         amount+=200;

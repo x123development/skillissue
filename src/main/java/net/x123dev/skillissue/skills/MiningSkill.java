@@ -42,11 +42,11 @@ public class MiningSkill implements Listener {
                     continue;
 
                 if(MainClass.INSTANCE.getSkillHandler().getSkillLvlFor(player.getUniqueId().toString(),Skills.MINING)>=50){
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING,22,2,false,false));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.HASTE,22,2,false,false));
                 }else if(MainClass.INSTANCE.getSkillHandler().getSkillLvlFor(player.getUniqueId().toString(),Skills.MINING)>=30){
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING,22,1,false,false));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.HASTE,22,1,false,false));
                 }else if(MainClass.INSTANCE.getSkillHandler().getSkillLvlFor(player.getUniqueId().toString(),Skills.MINING)>=10){
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING,22,0,false,false));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.HASTE,22,0,false,false));
                 }
             }
         }

@@ -9,13 +9,10 @@
         <module name="skillissue" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="skillissue" target="11" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="skillissue" options="--add-exports jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED" />
+      <module name="skillissue" options="" />
     </option>
   </component>
 </project>

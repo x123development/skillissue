@@ -9,10 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class BiomeHandler extends BukkitRunnable{
 
@@ -26,7 +23,7 @@ public class BiomeHandler extends BukkitRunnable{
     @Override
     public void run() {
         for(Player player:Bukkit.getOnlinePlayers()){
-            checkBiomeFor(player,player.getWorld().getBiome(player.getLocation()).getKey().toString());
+            checkBiomeFor(player,player.getWorld().getBiome(player.getLocation()).toString());
         }
     }
 

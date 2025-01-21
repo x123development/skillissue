@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
@@ -44,6 +45,11 @@ public class ExplorationSkill implements Listener {
     }
 
     @EventHandler
+    public void onPlayerAdvancementDone(PlayerAdvancementDoneEvent event){
+        MainClass.INSTANCE.getSkillHandler().addSkillExpFor(event.getPlayer().getUniqueId().toString(), SkillHandler.Skills.EXPLORATION,300);
+    }
+
+    @EventHandler
     public void onPlayerFish(PlayerFishEvent event){
 
         if(MainClass.INSTANCE.getSkillHandler().getSettingFor(event.getPlayer().getUniqueId().toString(),"skillsDisabled"))
@@ -69,18 +75,18 @@ public class ExplorationSkill implements Listener {
             for(Player player : Bukkit.getOnlinePlayers()){
 
                 if(MainClass.INSTANCE.getSkillHandler().getSettingFor(player.getUniqueId().toString(),"skillsDisabled")){
-                    player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.1d);
+                    player.getAttribute(Attribute.MOVEMENT_SPEED).setBaseValue(0.1d);
                     continue;
                 }
 
 
                 if(MainClass.INSTANCE.getSkillHandler().getSkillLvlFor(player.getUniqueId().toString(), SkillHandler.Skills.EXPLORATION)>50)
-                    player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.15d);
+                    player.getAttribute(Attribute.MOVEMENT_SPEED).setBaseValue(0.15d);
                 else
-                    player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.1d+((double)(MainClass.INSTANCE.getSkillHandler().getSkillLvlFor(player.getUniqueId().toString(), SkillHandler.Skills.EXPLORATION))/1000d));
+                    player.getAttribute(Attribute.MOVEMENT_SPEED).setBaseValue(0.1d+((double)(MainClass.INSTANCE.getSkillHandler().getSkillLvlFor(player.getUniqueId().toString(), SkillHandler.Skills.EXPLORATION))/1000d));
 
                 if(MainClass.INSTANCE.getSkillHandler().getSkillPerkFor(player.getUniqueId().toString(), SkillHandler.Skills.EXPLORATION)==1){
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP,22,1,false,false));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST,22,1,false,false));
                 }
             }
         }

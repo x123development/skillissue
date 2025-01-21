@@ -76,7 +76,7 @@ public class AlchemyMenu implements InventoryMenu {
                 (!perksUnlocked?ChatColor.DARK_RED+"Reach Level 10 to unlock perks for this skill!":(sh.getSkillPerkFor(uuid,Skills.ALCHEMY)==1?ChatColor.GOLD+"This perk is currently selected!":ChatColor.GREEN+"CLICK here to select this perk!"))));
         skillPerk1.setItemMeta(skillPerk1Meta);
         if(sh.getSkillPerkFor(uuid,Skills.ALCHEMY)==1)
-            skillPerk1.addUnsafeEnchantment(Enchantment.DURABILITY,1);
+            skillPerk1.addUnsafeEnchantment(Enchantment.UNBREAKING,1);
         menu.setItem(29,skillPerk1);
 
         ItemStack skillPerk2 = new ItemStack(Material.CLOCK);
@@ -90,7 +90,7 @@ public class AlchemyMenu implements InventoryMenu {
                 (!perksUnlocked?ChatColor.DARK_RED+"Reach Level 10 to unlock perks for this skill!":(sh.getSkillPerkFor(uuid,Skills.ALCHEMY)==2?ChatColor.GOLD+"This perk is currently selected!":ChatColor.GREEN+"CLICK here to select this perk!"))));
         skillPerk2.setItemMeta(skillPerk2Meta);
         if(sh.getSkillPerkFor(uuid,Skills.ALCHEMY)==2)
-            skillPerk2.addUnsafeEnchantment(Enchantment.DURABILITY,1);
+            skillPerk2.addUnsafeEnchantment(Enchantment.UNBREAKING,1);
         menu.setItem(31,skillPerk2);
 
         ItemStack skillPerk3 = new ItemStack(Material.COAL_BLOCK);
@@ -104,7 +104,7 @@ public class AlchemyMenu implements InventoryMenu {
                 (!perksUnlocked?ChatColor.DARK_RED+"Reach Level 10 to unlock perks for this skill!":(sh.getSkillPerkFor(uuid,Skills.ALCHEMY)==3?ChatColor.GOLD+"This perk is currently selected!":ChatColor.GREEN+"CLICK here to select this perk!"))));
         skillPerk3.setItemMeta(skillPerk3Meta);
         if(sh.getSkillPerkFor(uuid,Skills.ALCHEMY)==3)
-            skillPerk3.addUnsafeEnchantment(Enchantment.DURABILITY,1);
+            skillPerk3.addUnsafeEnchantment(Enchantment.UNBREAKING,1);
         menu.setItem(33,skillPerk3);
 
 

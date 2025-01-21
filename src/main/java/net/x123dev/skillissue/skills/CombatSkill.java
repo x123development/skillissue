@@ -39,20 +39,20 @@ public class CombatSkill implements Listener {
             for(Player player : Bukkit.getOnlinePlayers()){
 
                 if(MainClass.INSTANCE.getSkillHandler().getSettingFor(player.getUniqueId().toString(),"skillsDisabled")){
-                    player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
+                    player.getAttribute(Attribute.MAX_HEALTH).setBaseValue(20);
                     continue;
                 }
 
 
                 if(MainClass.INSTANCE.getSkillHandler().getSkillLvlFor(player.getUniqueId().toString(), SkillHandler.Skills.COMBAT)>50)
-                    player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(30);
+                    player.getAttribute(Attribute.MAX_HEALTH).setBaseValue(30);
                 else
-                    player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20+Math.floor(((double)(MainClass.INSTANCE.getSkillHandler().getSkillLvlFor(player.getUniqueId().toString(), SkillHandler.Skills.COMBAT)))/5d));
+                    player.getAttribute(Attribute.MAX_HEALTH).setBaseValue(20+Math.floor(((double)(MainClass.INSTANCE.getSkillHandler().getSkillLvlFor(player.getUniqueId().toString(), SkillHandler.Skills.COMBAT)))/5d));
 
                 if(MainClass.INSTANCE.getSkillHandler().getSkillPerkFor(player.getUniqueId().toString(), SkillHandler.Skills.COMBAT)==1){
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE,22,0,false,false));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH,22,0,false,false));
                 }else if(MainClass.INSTANCE.getSkillHandler().getSkillPerkFor(player.getUniqueId().toString(), SkillHandler.Skills.COMBAT)==2){
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE,22,0,false,false));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE,22,0,false,false));
                 }
             }
         }
@@ -78,11 +78,11 @@ public class CombatSkill implements Listener {
                 killstreakHashMap.put(event.getEntity().getKiller(),new Killstreak(1,event.getEntityType(),event.getEntity().getKiller().getLocation()));
             }
             if(killstreakHashMap.get(event.getEntity().getKiller()).count>10&&last!=null&& Objects.requireNonNull(last.getWorld()).getName().equals(Objects.requireNonNull(event.getEntity().getKiller().getLocation().getWorld()).getName())&&last.distance(event.getEntity().getKiller().getLocation())<20){
-                MainClass.INSTANCE.getSkillHandler().addSkillExpFor(event.getEntity().getKiller().getUniqueId().toString(), SkillHandler.Skills.COMBAT, (long)(Objects.requireNonNull(event.getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue()*0.25d));
+                MainClass.INSTANCE.getSkillHandler().addSkillExpFor(event.getEntity().getKiller().getUniqueId().toString(), SkillHandler.Skills.COMBAT, (long)(Objects.requireNonNull(event.getEntity().getAttribute(Attribute.MAX_HEALTH)).getValue()*0.25d));
                 event.getEntity().getKiller().sendMessage(ChatColor.RED+"You are gaining reduced Combat Exp!");
             }
             else{
-                MainClass.INSTANCE.getSkillHandler().addSkillExpFor(event.getEntity().getKiller().getUniqueId().toString(), SkillHandler.Skills.COMBAT, (long)(Objects.requireNonNull(event.getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue()*2.5d));
+                MainClass.INSTANCE.getSkillHandler().addSkillExpFor(event.getEntity().getKiller().getUniqueId().toString(), SkillHandler.Skills.COMBAT, (long)(Objects.requireNonNull(event.getEntity().getAttribute(Attribute.MAX_HEALTH)).getValue()*2.5d));
             }
 
         }

@@ -69,7 +69,7 @@ public class MasteryMenu implements InventoryMenu {
                 (!perks10Unlocked?ChatColor.DARK_RED+"Reach Mastery Level 10 to unlock this perk!":(sh.getMasteryPerkFor(uuid)==1?ChatColor.GOLD+"This perk is currently selected!":ChatColor.GREEN+"CLICK here to select this perk!"))));
         skillPerk1.setItemMeta(skillPerk1Meta);
         if(sh.getMasteryPerkFor(uuid)==1)
-            skillPerk1.addUnsafeEnchantment(Enchantment.DURABILITY,1);
+            skillPerk1.addUnsafeEnchantment(Enchantment.UNBREAKING,1);
         menu.setItem(28,skillPerk1);
 
         ItemStack skillPerk2 = new ItemStack(Material.EXPERIENCE_BOTTLE);
@@ -82,7 +82,7 @@ public class MasteryMenu implements InventoryMenu {
                 (!perks10Unlocked?ChatColor.DARK_RED+"Reach Mastery Level 10 to unlock this perk!":(sh.getMasteryPerkFor(uuid)==2?ChatColor.GOLD+"This perk is currently selected!":ChatColor.GREEN+"CLICK here to select this perk!"))));
         skillPerk2.setItemMeta(skillPerk2Meta);
         if(sh.getMasteryPerkFor(uuid)==2)
-            skillPerk2.addUnsafeEnchantment(Enchantment.DURABILITY,1);
+            skillPerk2.addUnsafeEnchantment(Enchantment.UNBREAKING,1);
         menu.setItem(30,skillPerk2);
 
         ItemStack skillPerk3 = new ItemStack(Material.TOTEM_OF_UNDYING);
@@ -95,7 +95,7 @@ public class MasteryMenu implements InventoryMenu {
                 (!perks20Unlocked?ChatColor.DARK_RED+"Reach Mastery Level 20 to unlock this perk!":(sh.getMasteryPerkFor(uuid)==3?ChatColor.GOLD+"This perk is currently selected!":ChatColor.GREEN+"CLICK here to select this perk!"))));
         skillPerk3.setItemMeta(skillPerk3Meta);
         if(sh.getMasteryPerkFor(uuid)==3)
-            skillPerk3.addUnsafeEnchantment(Enchantment.DURABILITY,1);
+            skillPerk3.addUnsafeEnchantment(Enchantment.UNBREAKING,1);
         menu.setItem(32,skillPerk3);
 
         ItemStack skillPerk4 = new ItemStack(Material.RAW_IRON);
@@ -108,7 +108,7 @@ public class MasteryMenu implements InventoryMenu {
                 (!perks10Unlocked?ChatColor.DARK_RED+"Reach Mastery Level 10 to unlock this perk!":(sh.getMasteryPerkFor(uuid)==4?ChatColor.GOLD+"This perk is currently selected!":ChatColor.GREEN+"CLICK here to select this perk!"))));
         skillPerk4.setItemMeta(skillPerk4Meta);
         if(sh.getMasteryPerkFor(uuid)==4)
-            skillPerk4.addUnsafeEnchantment(Enchantment.DURABILITY,1);
+            skillPerk4.addUnsafeEnchantment(Enchantment.UNBREAKING,1);
         menu.setItem(34,skillPerk4);
 
 

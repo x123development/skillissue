@@ -49,7 +49,7 @@ public class MasterySkill implements Listener {
                                 if(entity.getType()== EntityType.EXPERIENCE_ORB){
                                     player.giveExp(((ExperienceOrb)entity).getExperience());
                                     entity.remove();
-                                }else if(entity.getType()==EntityType.DROPPED_ITEM){
+                                }else if(entity.getType()==EntityType.ITEM){
                                     if(!(entity.getCustomName()!=null&&entity.getCustomName().equals("drop"))){
                                         HashMap<Integer, ItemStack> didntFit = player.getInventory().addItem(((Item)entity).getItemStack());
                                         for(Map.Entry<Integer, ItemStack> entry : didntFit.entrySet()){
